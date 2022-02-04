@@ -1,0 +1,14 @@
+{
+  "name": "instagram-giveaway",
+  "version": "1.0.0",
+  "description": "task 1 - instagram-giveaway",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mihail Kurov <miklay89@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

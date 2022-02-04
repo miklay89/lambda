@@ -1,0 +1,20 @@
+{
+  "name": "correctarium",
+  "version": "1.0.0",
+  "description": "task 2 - correctarium",
+  "main": "",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index",
+    "test": "jest"
+  },
+  "author": "Mihail Kurov <miklay89@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "jest": "^27.4.7"
+  }
+}

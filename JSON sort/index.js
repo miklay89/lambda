@@ -76,17 +76,21 @@ async function reqModule(url, i) {
 async function getKey(obj) {
   const url = obj.url;
   const data = obj.data;
-  let value;
 
-  for(let prop in data) {
-    if(data.hasOwnProperty('isDone')) {
-      value = data.isDone;
-    } else {
-      if(data[prop].hasOwnProperty('isDone')) {
-      value = data[prop].isDone;
+  function findValueRecursive(obj) {
+    for (let prop in obj) {
+      if(obj.hasOwnProperty('isDone')) {
+        return obj.isDone;
+      } else {
+        if(obj[prop].hasOwnProperty('isDone')) {
+          return findValueRecursive(obj[prop]);
+        }
       }
     }
   }
+
+  const value = findValueRecursive(data);
+
   return {url: url, value: value};
 }
 

@@ -1,6 +1,4 @@
 const readline = require("readline");
-const ac = new AbortController();
-const signal = ac.signal;
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,

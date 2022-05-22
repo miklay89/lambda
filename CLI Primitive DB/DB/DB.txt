@@ -1,0 +1,16 @@
+{"name":"Germiona","gender":"female","years":65}
+{"name":"KilBill","gender":"male","years":34}
+{"name":"Oleg","gender":"male","years":45}
+{"name":"Olaf","gender":"male","years":156}
+{"name":"Kiril","gender":"male","years":34}
+{"name":"Misha","gender":"male","years":33}
+{"name":"Olga","gender":"female","years":56}
+{"name":"Neo","gender":"male","years":57}
+{"name":"Artas","gender":"male","years":179}
+{"name":"Lich","gender":"female","years":878}
+{"name":"Katerina","gender":"female","years":25}
+{"name":"Godzilla","gender":"female","years":2022}
+{"name":"OnePunchMan","gender":"male","years":33}
+{"name":"Miguel","gender":"male","years":45}
+{"name":"Mykhailo","gender":"male","years":33}
+{"name":"Node","gender":"male","years":14}

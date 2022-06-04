@@ -4,18 +4,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 process.env.NTBA_FIX_319 = '1';
+const dotenv_1 = __importDefault(require("dotenv"));
 const node_telegram_bot_api_1 = __importDefault(require("node-telegram-bot-api"));
-const keys_1 = __importDefault(require("./keys/keys"));
 const getDataFromAPI_1 = __importDefault(require("./helpers/getDataFromAPI"));
 const dataHandler_1 = __importDefault(require("./helpers/dataHandler"));
 const dataHandler_2 = require("./helpers/dataHandler");
-const weather_api_url = `https://api.openweathermap.org/data/2.5/forecast?lat=${keys_1.default.coordinates.lat}&lon=${keys_1.default.coordinates.lon}&appid=${keys_1.default.WEATHER_API_KEY}&units=metric`;
+dotenv_1.default.config();
+const weather_api_url = `https://api.openweathermap.org/data/2.5/forecast?lat=${process.env.LATITUDE}&lon=${process.env.LONGTITUDE}&appid=${process.env.WEATHER_API_KEY}&units=metric`;
 var BotKeys;
 (function (BotKeys) {
     BotKeys["threeHours"] = "3 hours forecast";
     BotKeys["sixHours"] = "6 hours forecast";
 })(BotKeys || (BotKeys = {}));
-const bot = new node_telegram_bot_api_1.default(keys_1.default.TELEGRAMBOT_TOKEN, { polling: true });
+const bot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN, { polling: true });
 bot.on('message', async (msg) => {
     var _a, _b, _c;
     const start = "/start";

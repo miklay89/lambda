@@ -1,0 +1,3 @@
+Currency rates UAH in Mono Bank:
+USD: buy - 31.60 UAH, sale - 32.70 UAH
+EUR: buy - 33.50 UAH, sale - 34.95 UAH

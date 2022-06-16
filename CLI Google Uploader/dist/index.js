@@ -25,9 +25,9 @@ inquirer_1.default.prompt([
     .then(answers => {
     result.pathToFile = answers.path;
     console.log('Path to file: ', result.pathToFile);
-    result.fileName = path_1.default.basename(answers.path).slice(0, -1);
+    result.fileName = path_1.default.basename(answers.path);
     console.log('Filename: ', result.fileName);
-    result.extname = path_1.default.extname(answers.path).slice(0, -1);
+    result.extname = path_1.default.extname(answers.path);
     result.mime_type = (0, mime_types_1.lookup)(result.extname);
     console.log('File extname: ', result.extname);
 }).then(() => {
@@ -53,7 +53,7 @@ inquirer_1.default.prompt([
         }
         console.log(result.pathToFile);
         console.log(fullFilename);
-        const path = result.pathToFile.slice(1, -1);
+        const path = result.pathToFile;
         console.log(path);
         const mime_type = result.mime_type;
         const id = await (0, google_1.fileUpload)(path, fullFilename, mime_type);

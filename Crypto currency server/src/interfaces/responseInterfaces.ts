@@ -125,3 +125,12 @@ export interface SQLLastMarketPrice {
     [marketName: string]: string;
   };
 }
+
+export interface SQLQuery {
+  average_price: string;
+}
+
+export interface SQLFollowListQuery {
+  user_id: string;
+  [cryptoSymbol: string]: string;
+}

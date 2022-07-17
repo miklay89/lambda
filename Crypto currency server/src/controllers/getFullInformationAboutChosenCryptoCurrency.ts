@@ -1,11 +1,10 @@
 import { RequestHandler } from "express";
-import { readFromDB } from "../database";
-import cryptoSymbols from "../requestQueryData/cryptoSymbols";
-import cryptoMarkets from "../requestQueryData/cryptoMarkets";
 import {
-  SQLAverageByIntervalResponse,
-  SQLLastMarketPrice,
-} from "../interfaces/responseInterfaces";
+  getAveragePriceByTimeInterval,
+  getLastPrice,
+  checkIsFollowingFromDB,
+  updateFollowingState,
+} from "../database";
 
 const getFullInformationAboutChosenCryptoCurrency: RequestHandler = async (
   req,
@@ -14,36 +13,26 @@ const getFullInformationAboutChosenCryptoCurrency: RequestHandler = async (
   const cryptoSymbol = req.query.cryptoSymbol as string;
   const market = req.query.market as string;
   const period = req.query.period as string;
+  const userId = req.query.userId as string;
+  const switchFollowingState = req.query.switchFollowingState as string;
 
-  // checking valid query crypto symbol
-  const cryptoSymbolCandidate = cryptoSymbols.find(
-    (storedSymbol) => storedSymbol === cryptoSymbol,
-  );
-  if (!cryptoSymbolCandidate) {
-    res.json({
-      message: `Crypto symbol incorrect, please use one from list: ${cryptoSymbols}`,
-    });
-    return;
-  }
+  // check in following list
+  const isFollowing = await checkIsFollowingFromDB(userId, cryptoSymbol);
 
-  // checking valid query crypto market
-  const cryptoMarketCandidate = cryptoMarkets.find(
-    (storedMarket) => storedMarket === market,
-  );
-  if (!cryptoMarketCandidate) {
-    res.json({
-      message: `Crypto market incorrect, please use one from list: ${cryptoMarkets}`,
-    });
+  // switching following state
+  if (switchFollowingState === "true") {
+    await updateFollowingState(userId, cryptoSymbol, isFollowing);
+    res.json({ message: "following state was changed" });
     return;
   }
 
   // checking period
   if (period) {
-    const data = (await readFromDB(
+    const data = await getAveragePriceByTimeInterval(
       cryptoSymbol,
       market,
       +period,
-    )) as SQLAverageByIntervalResponse;
+    );
     if (!data) {
       res.json("No data founded in DB");
       return;
@@ -53,20 +42,25 @@ const getFullInformationAboutChosenCryptoCurrency: RequestHandler = async (
       market,
       average_price: data[0][`AVG(a.${market})`],
       period: `${period} ms`,
+      isFollowing,
     };
     res.json(responseMessage);
     return;
   }
-  const data = (await readFromDB(cryptoSymbol, market)) as SQLLastMarketPrice;
+
+  // getting last price
+  const data = await getLastPrice(cryptoSymbol, market);
   if (!data) {
     res.json("No data founded in DB");
     return;
   }
+
   const responseMessage = {
     cryptoSymbol,
     market,
     last_price: data[0][`${market}`],
     period: "not set",
+    isFollowing,
   };
   res.json(responseMessage);
 };

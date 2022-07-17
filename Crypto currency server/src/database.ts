@@ -5,6 +5,8 @@ import cryptoSymbols from "./requestQueryData/cryptoSymbols";
 import {
   SQLLastMarketPrice,
   SQLAverageByIntervalResponse,
+  SQLQuery,
+  SQLFollowListQuery,
 } from "./interfaces/responseInterfaces";
 
 dotenv.config();
@@ -47,6 +49,7 @@ function averagePrice(
   return average;
 }
 
+// save to DB info from API
 export async function saveToDataBase(
   data: ResponseDataAfterHandlingInterface[],
   timeStamp: string,
@@ -121,6 +124,7 @@ export async function saveToDataBase(
   }
 }
 
+// getting last price of cryptocurrency
 export async function getLastPrice(
   cryptoCurrencySymbol: string,
   cryptoMarket: string,
@@ -139,7 +143,8 @@ export async function getLastPrice(
   });
 }
 
-async function getAveragePriceByTimeInterval(
+// getting full info about cryptocurrency
+export async function getAveragePriceByTimeInterval(
   cryptoCurrencySymbol: string,
   cryptoMarket: string,
   timeInterval: number,
@@ -163,25 +168,159 @@ async function getAveragePriceByTimeInterval(
   });
 }
 
-export async function readFromDB(
-  cryptoCurrencySymbol: string,
-  cryptoMarket: string,
-  timeInterval?: number,
-): Promise<SQLLastMarketPrice | SQLAverageByIntervalResponse | null> {
-  // getting last average price by cryptoSymbol
-  try {
-    if (timeInterval) {
-      const priceByInterval = await getAveragePriceByTimeInterval(
-        cryptoCurrencySymbol,
-        cryptoMarket,
-        timeInterval,
+// getting recent list
+export async function getListRecent(): Promise<SQLQuery[]> {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `SELECT crypto_currency_symbol, average_price FROM crypto_currency_price order by Timestamp desc limit 20;`,
+      (error: Error, result: SQLQuery[]) => {
+        if (error) reject(error);
+        resolve(result);
+      },
+    );
+  });
+}
+
+// following list
+export async function checkIsFollowingFromDB(
+  userId: string,
+  cryptoSymbol: string,
+): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `SELECT user_id, options FROM follow_list WHERE user_id="${userId}" AND options="${cryptoSymbol}";`,
+      (error: Error, result: SQLFollowListQuery[]) => {
+        if (error) reject(error);
+        if (result.length === 0) {
+          resolve(false);
+          return;
+        }
+        resolve(true);
+      },
+    );
+  });
+}
+
+// update folowing list
+export async function updateFollowingState(
+  userId: string,
+  cryptoSymbol: string,
+  isFollowing: boolean,
+) {
+  return new Promise((resolve, reject) => {
+    // delete from DB
+    if (isFollowing) {
+      connection.query(
+        `DELETE FROM follow_list WHERE user_id="${userId}";`,
+        (error: Error) => {
+          if (error) reject(error);
+        },
       );
-      return priceByInterval;
+      resolve(true);
+      return;
     }
-    const lastPrice = await getLastPrice(cryptoCurrencySymbol, cryptoMarket);
-    return lastPrice;
-  } catch (error) {
-    console.log(error);
-  }
-  return null;
+    connection.query(
+      `INSERT INTO follow_list (user_id, options) VALUES ("${userId}","${cryptoSymbol}");`,
+      (error: Error) => {
+        if (error) reject(error);
+      },
+    );
+    resolve(true);
+  });
+}
+
+// favourite list
+// getting query params for favourite list
+export async function getFavouriteListFromDB(userId: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `SELECT user_id, options FROM favourite_list WHERE user_id="${userId}";`,
+      (error: Error, result: SQLFollowListQuery[]) => {
+        if (error) reject(error);
+        if (result.length === 0) {
+          resolve("");
+          return;
+        }
+
+        const favouriteListArr = result.map(({ options }) => options);
+        let favouriteQueryString = ``;
+        favouriteListArr.forEach((el, index) => {
+          favouriteQueryString += `"${el}",`;
+          if (index === favouriteListArr.length - 1)
+            favouriteQueryString = favouriteQueryString.slice(
+              0,
+              favouriteQueryString.length - 1,
+            );
+        });
+        resolve(favouriteQueryString);
+      },
+    );
+  });
+}
+
+// extracting data from DB by favourite query string
+export async function getFavouriteListCryptoCurrency(queryString: string) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `SELECT a.crypto_currency_symbol, a.average_price FROM
+          (SELECT * FROM crypto_currency_price order by Timestamp desc limit 20) a WHERE
+          crypto_currency_symbol in (${queryString});`,
+      (error: Error, result: SQLQuery[]) => {
+        if (error) reject(error);
+        resolve(result);
+      },
+    );
+  });
+}
+
+// check in favourite list
+export async function checkInFavouriteList(
+  userId: string,
+  cryptoSymbol: string,
+): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `SELECT user_id, options FROM favourite_list WHERE user_id="${userId}" AND options="${cryptoSymbol}";`,
+      (error: Error, result: SQLFollowListQuery[]) => {
+        if (error) reject(error);
+        if (result.length === 0) {
+          resolve(false);
+          return;
+        }
+        resolve(true);
+      },
+    );
+  });
+}
+
+// save to favourite_list
+export async function saveToFavouriteList(
+  userId: string,
+  cryptoSymbol: string,
+): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `INSERT INTO favourite_list (user_id, options) VALUES ("${userId}","${cryptoSymbol}");`,
+      (error: Error) => {
+        if (error) reject(error);
+      },
+    );
+    resolve(true);
+  });
+}
+
+// delete from favourite list
+export async function deleteFromFavouriteList(
+  userId: string,
+  cryptoSymbol: string,
+): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `DELETE FROM favourite_list WHERE user_id="${userId}" AND options="${cryptoSymbol}";`,
+      (error: Error) => {
+        if (error) reject(error);
+      },
+    );
+    resolve(true);
+  });
 }

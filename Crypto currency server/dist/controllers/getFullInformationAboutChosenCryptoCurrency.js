@@ -1,31 +1,20 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const database_1 = require("../database");
-const cryptoSymbols_1 = __importDefault(require("../requestQueryData/cryptoSymbols"));
-const cryptoMarkets_1 = __importDefault(require("../requestQueryData/cryptoMarkets"));
 const getFullInformationAboutChosenCryptoCurrency = async (req, res) => {
     const cryptoSymbol = req.query.cryptoSymbol;
     const market = req.query.market;
     const period = req.query.period;
-    const cryptoSymbolCandidate = cryptoSymbols_1.default.find((storedSymbol) => storedSymbol === cryptoSymbol);
-    if (!cryptoSymbolCandidate) {
-        res.json({
-            message: `Crypto symbol incorrect, please use one from list: ${cryptoSymbols_1.default}`,
-        });
-        return;
-    }
-    const cryptoMarketCandidate = cryptoMarkets_1.default.find((storedMarket) => storedMarket === market);
-    if (!cryptoMarketCandidate) {
-        res.json({
-            message: `Crypto market incorrect, please use one from list: ${cryptoMarkets_1.default}`,
-        });
+    const userId = req.query.userId;
+    const switchFollowingState = req.query.switchFollowingState;
+    const isFollowing = await (0, database_1.checkIsFollowingFromDB)(userId, cryptoSymbol);
+    if (switchFollowingState === "true") {
+        await (0, database_1.updateFollowingState)(userId, cryptoSymbol, isFollowing);
+        res.json({ message: "following state was changed" });
         return;
     }
     if (period) {
-        const data = (await (0, database_1.readFromDB)(cryptoSymbol, market, +period));
+        const data = await (0, database_1.getAveragePriceByTimeInterval)(cryptoSymbol, market, +period);
         if (!data) {
             res.json("No data founded in DB");
             return;
@@ -35,11 +24,12 @@ const getFullInformationAboutChosenCryptoCurrency = async (req, res) => {
             market,
             average_price: data[0][`AVG(a.${market})`],
             period: `${period} ms`,
+            isFollowing,
         };
         res.json(responseMessage);
         return;
     }
-    const data = (await (0, database_1.readFromDB)(cryptoSymbol, market));
+    const data = await (0, database_1.getLastPrice)(cryptoSymbol, market);
     if (!data) {
         res.json("No data founded in DB");
         return;
@@ -49,6 +39,7 @@ const getFullInformationAboutChosenCryptoCurrency = async (req, res) => {
         market,
         last_price: data[0][`${market}`],
         period: "not set",
+        isFollowing,
     };
     res.json(responseMessage);
 };

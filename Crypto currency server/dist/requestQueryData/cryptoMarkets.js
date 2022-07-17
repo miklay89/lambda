@@ -6,5 +6,6 @@ const cryptoMarkets = [
     "CoinPaprica",
     "CoinStats",
     "KuCoin",
+    "average_price",
 ];
 exports.default = cryptoMarkets;

@@ -1,0 +1,35 @@
+{
+  "name": "crypto-currency-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./dist/index",
+    "dev": "nodemon ./dist/index",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "node-telegram-bot-api": "^0.58.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/node-telegram-bot-api": "^0.57.1",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "eslint": "^8.18.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.16",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
+  },
+  "description": ""
+}

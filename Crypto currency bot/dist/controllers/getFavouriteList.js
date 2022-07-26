@@ -13,6 +13,8 @@ async function getFavouriteList(userId) {
     };
     const url = process.env.GET_FAVOURITE_LIST_URL;
     const response = await (0, requestHandler_1.default)(url, params);
+    if (!response)
+        return null;
     const responseProcessed = (0, dataHandler_1.favouriteListDataHandler)(response === null || response === void 0 ? void 0 : response.data);
     return responseProcessed;
 }

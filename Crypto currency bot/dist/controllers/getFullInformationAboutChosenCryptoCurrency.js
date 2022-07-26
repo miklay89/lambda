@@ -54,6 +54,9 @@ async function getFullInfo(userId, cryptoSymbol) {
         cryptoSymbol,
         switchFollowingState: "false",
     });
+    if (!data24H || !data12H || !data6H || !data3H || !data1H || !data30m) {
+        return null;
+    }
     resultArr.push(data24H === null || data24H === void 0 ? void 0 : data24H.data, data12H === null || data12H === void 0 ? void 0 : data12H.data, data6H === null || data6H === void 0 ? void 0 : data6H.data, data3H === null || data3H === void 0 ? void 0 : data3H.data, data1H === null || data1H === void 0 ? void 0 : data1H.data, data30m === null || data30m === void 0 ? void 0 : data30m.data);
     const message = (0, dataHandler_1.fullInfoDataHandler)(resultArr);
     return message;
@@ -67,6 +70,8 @@ async function switchFollowingState(userId, cryptoSymbol) {
         cryptoSymbol,
         switchFollowingState: "true",
     });
+    if (!response)
+        return null;
     return response === null || response === void 0 ? void 0 : response.data;
 }
 exports.switchFollowingState = switchFollowingState;

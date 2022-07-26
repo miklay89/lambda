@@ -54,6 +54,10 @@ ${cryptoSymbols_1.default}`);
         const cryptoSymbol = msg.text.toString().split(" ")[1];
         if (cryptoSymbols_1.default.includes(cryptoSymbol) && userId) {
             const message = await (0, addToFavouriteList_1.default)(userId, cryptoSymbol);
+            if (!message) {
+                bot.sendMessage(msg.chat.id, "No conection to server, please try again later.");
+                return;
+            }
             bot.sendMessage(msg.chat.id, message);
             return;
         }
@@ -70,6 +74,10 @@ ${cryptoSymbols_1.default}`);
         const cryptoSymbol = (_g = msg.text) === null || _g === void 0 ? void 0 : _g.toString().split(" ")[1];
         if (cryptoSymbols_1.default.includes(cryptoSymbol) && userId) {
             const message = await (0, deleteFromFavouriteList_1.default)(userId, cryptoSymbol);
+            if (!message) {
+                bot.sendMessage(msg.chat.id, "No conection to server, please try again later.");
+                return;
+            }
             bot.sendMessage(msg.chat.id, message);
             return;
         }
@@ -80,6 +88,10 @@ ${cryptoSymbols_1.default}`);
         const userId = (_j = msg.from) === null || _j === void 0 ? void 0 : _j.id;
         if (userId) {
             const message = await (0, getFavouriteList_1.default)(userId);
+            if (!message) {
+                bot.sendMessage(msg.chat.id, "No conection to server, please try again later.");
+                return;
+            }
             bot.sendMessage(msg.chat.id, message);
             return;
         }
@@ -89,6 +101,10 @@ ${cryptoSymbols_1.default}`);
         const userId = (_m = msg.from) === null || _m === void 0 ? void 0 : _m.id;
         if (userId && cryptoSymbol) {
             const message = await (0, getFullInformationAboutChosenCryptoCurrency_1.getFullInfo)(userId, cryptoSymbol);
+            if (!message) {
+                bot.sendMessage(msg.chat.id, "No conection to server, please try again later.");
+                return;
+            }
             if (message.isFollowing) {
                 bot.sendMessage(msg.chat.id, message.message, {
                     reply_markup: {
@@ -121,6 +137,10 @@ ${cryptoSymbols_1.default}`);
     }
     if (((_o = msg.text) === null || _o === void 0 ? void 0 : _o.toString().indexOf(BotMessages.getRecentListText)) === 0) {
         const message = await (0, getListRecent_1.default)();
+        if (!message) {
+            bot.sendMessage(msg.chat.id, "No conection to server, please try again later.");
+            return;
+        }
         bot.sendMessage(msg.chat.id, message);
         return;
     }
@@ -136,8 +156,12 @@ bot.on("callback_query", async (text) => {
         }
         const cryptoSymbolString = (_b = text.message) === null || _b === void 0 ? void 0 : _b.text.toString().split(":")[0].split("-");
         const cryptoSymbol = cryptoSymbolString[1].slice(1, cryptoSymbolString[1].length);
-        await (0, getFullInformationAboutChosenCryptoCurrency_1.switchFollowingState)(userId, cryptoSymbol);
         const chatId = (_c = text.message) === null || _c === void 0 ? void 0 : _c.chat.id;
+        const data = await (0, getFullInformationAboutChosenCryptoCurrency_1.switchFollowingState)(userId, cryptoSymbol);
+        if (!data) {
+            bot.sendMessage(chatId, "No conection to server, please try again later.");
+            return;
+        }
         const message = `Following state was changed, use /${cryptoSymbol} command to see it.`;
         bot.answerCallbackQuery(text.id);
         bot.sendMessage(chatId, message);

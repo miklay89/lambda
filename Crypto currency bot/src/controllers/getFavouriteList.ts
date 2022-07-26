@@ -10,6 +10,7 @@ export default async function getFavouriteList(userId: number) {
   };
   const url = process.env.GET_FAVOURITE_LIST_URL as string;
   const response = await getDataFromApi(url, params);
+  if (!response) return null;
   const responseProcessed = favouriteListDataHandler(response?.data);
   return responseProcessed;
 }

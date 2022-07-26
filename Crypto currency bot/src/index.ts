@@ -77,6 +77,13 @@ ${cryptoSymbols}`,
 
     if (cryptoSymbols.includes(cryptoSymbol) && userId) {
       const message = await addToFavouriteList(userId, cryptoSymbol);
+      if (!message) {
+        bot.sendMessage(
+          msg.chat.id,
+          "No conection to server, please try again later.",
+        );
+        return;
+      }
       bot.sendMessage(msg.chat.id, message);
       return;
     }
@@ -106,6 +113,13 @@ ${cryptoSymbols}`,
 
     if (cryptoSymbols.includes(cryptoSymbol) && userId) {
       const message = await deleteFromFavouriteList(userId, cryptoSymbol);
+      if (!message) {
+        bot.sendMessage(
+          msg.chat.id,
+          "No conection to server, please try again later.",
+        );
+        return;
+      }
       bot.sendMessage(msg.chat.id, message);
       return;
     }
@@ -122,6 +136,13 @@ ${cryptoSymbols}`,
     const userId = msg.from?.id;
     if (userId) {
       const message = await getFavouriteList(userId);
+      if (!message) {
+        bot.sendMessage(
+          msg.chat.id,
+          "No conection to server, please try again later.",
+        );
+        return;
+      }
       bot.sendMessage(msg.chat.id, message);
       return;
     }
@@ -134,6 +155,13 @@ ${cryptoSymbols}`,
     const userId = msg.from?.id;
     if (userId && cryptoSymbol) {
       const message = await getFullInfo(userId, cryptoSymbol);
+      if (!message) {
+        bot.sendMessage(
+          msg.chat.id,
+          "No conection to server, please try again later.",
+        );
+        return;
+      }
       if (message.isFollowing) {
         bot.sendMessage(msg.chat.id, message.message, {
           reply_markup: {
@@ -168,6 +196,13 @@ ${cryptoSymbols}`,
   // get recent list logic
   if (msg.text?.toString().indexOf(BotMessages.getRecentListText) === 0) {
     const message = await getListRecent();
+    if (!message) {
+      bot.sendMessage(
+        msg.chat.id,
+        "No conection to server, please try again later.",
+      );
+      return;
+    }
     bot.sendMessage(msg.chat.id, message);
     return;
   }
@@ -195,8 +230,15 @@ bot.on("callback_query", async (text) => {
       1,
       cryptoSymbolString[1].length,
     );
-    await switchFollowingState(userId, cryptoSymbol);
     const chatId = text.message?.chat.id;
+    const data = await switchFollowingState(userId, cryptoSymbol);
+    if (!data) {
+      bot.sendMessage(
+        chatId,
+        "No conection to server, please try again later.",
+      );
+      return;
+    }
     const message = `Following state was changed, use /${cryptoSymbol} command to see it.`;
     bot.answerCallbackQuery(text.id);
     bot.sendMessage(chatId, message);

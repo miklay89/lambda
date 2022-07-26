@@ -54,6 +54,9 @@ export async function getFullInfo(userId: number, cryptoSymbol: string) {
     cryptoSymbol,
     switchFollowingState: "false",
   });
+  if (!data24H || !data12H || !data6H || !data3H || !data1H || !data30m) {
+    return null;
+  }
   resultArr.push(
     data24H?.data,
     data12H?.data,
@@ -78,5 +81,6 @@ export async function switchFollowingState(
     cryptoSymbol,
     switchFollowingState: "true",
   });
+  if (!response) return null;
   return response?.data as SwitchFollowingState;
 }

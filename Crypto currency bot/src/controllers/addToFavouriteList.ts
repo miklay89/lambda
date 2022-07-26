@@ -13,5 +13,6 @@ export default async function addToFavouriteList(
   };
   const url = process.env.ADD_TO_FAVOURITE_LIST_URL as string;
   const response = await getDataFromApi(url, params);
+  if (!response) return null;
   return response?.data?.message;
 }

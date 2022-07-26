@@ -13,5 +13,6 @@ export default async function deleteFromFavouriteList(
   };
   const url = process.env.DELETE_FROM_FAVOURITE_LIST_URL as string;
   const response = await getDataFromApi(url, params);
+  if (!response) return null;
   return response?.data?.message;
 }

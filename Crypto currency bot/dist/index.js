@@ -52,7 +52,9 @@ ${cryptoSymbols_1.default}`);
         }
         const userId = (_d = msg.from) === null || _d === void 0 ? void 0 : _d.id;
         const cryptoSymbol = msg.text.toString().split(" ")[1];
-        if (cryptoSymbols_1.default.includes(cryptoSymbol) && userId) {
+        if (cryptoSymbols_1.default.includes(cryptoSymbol) &&
+            userId &&
+            cryptoSymbol !== null) {
             const message = await (0, addToFavouriteList_1.default)(userId, cryptoSymbol);
             if (!message) {
                 bot.sendMessage(msg.chat.id, "No conection to server, please try again later.");
@@ -72,7 +74,9 @@ ${cryptoSymbols_1.default}`);
         }
         const userId = (_f = msg.from) === null || _f === void 0 ? void 0 : _f.id;
         const cryptoSymbol = (_g = msg.text) === null || _g === void 0 ? void 0 : _g.toString().split(" ")[1];
-        if (cryptoSymbols_1.default.includes(cryptoSymbol) && userId) {
+        if (cryptoSymbols_1.default.includes(cryptoSymbol) &&
+            userId &&
+            cryptoSymbol !== null) {
             const message = await (0, deleteFromFavouriteList_1.default)(userId, cryptoSymbol);
             if (!message) {
                 bot.sendMessage(msg.chat.id, "No conection to server, please try again later.");
@@ -99,7 +103,7 @@ ${cryptoSymbols_1.default}`);
     if (cryptoSymbols_1.default.includes((_k = msg.text) === null || _k === void 0 ? void 0 : _k.toString().slice(1))) {
         const cryptoSymbol = (_l = msg.text) === null || _l === void 0 ? void 0 : _l.toString().slice(1);
         const userId = (_m = msg.from) === null || _m === void 0 ? void 0 : _m.id;
-        if (userId && cryptoSymbol) {
+        if (userId && cryptoSymbol && cryptoSymbol !== null) {
             const message = await (0, getFullInformationAboutChosenCryptoCurrency_1.getFullInfo)(userId, cryptoSymbol);
             if (!message) {
                 bot.sendMessage(msg.chat.id, "No conection to server, please try again later.");

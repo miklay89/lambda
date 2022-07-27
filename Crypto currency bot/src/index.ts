@@ -75,7 +75,11 @@ ${cryptoSymbols}`,
     const userId = msg.from?.id;
     const cryptoSymbol = msg.text.toString().split(" ")[1];
 
-    if (cryptoSymbols.includes(cryptoSymbol) && userId) {
+    if (
+      cryptoSymbols.includes(cryptoSymbol) &&
+      userId &&
+      cryptoSymbol !== null
+    ) {
       const message = await addToFavouriteList(userId, cryptoSymbol);
       if (!message) {
         bot.sendMessage(
@@ -111,7 +115,11 @@ ${cryptoSymbols}`,
     const userId = msg.from?.id;
     const cryptoSymbol = msg.text?.toString().split(" ")[1];
 
-    if (cryptoSymbols.includes(cryptoSymbol) && userId) {
+    if (
+      cryptoSymbols.includes(cryptoSymbol) &&
+      userId &&
+      cryptoSymbol !== null
+    ) {
       const message = await deleteFromFavouriteList(userId, cryptoSymbol);
       if (!message) {
         bot.sendMessage(
@@ -153,7 +161,7 @@ ${cryptoSymbols}`,
   if (cryptoSymbols.includes(msg.text?.toString().slice(1) as string)) {
     const cryptoSymbol = msg.text?.toString().slice(1);
     const userId = msg.from?.id;
-    if (userId && cryptoSymbol) {
+    if (userId && cryptoSymbol && cryptoSymbol !== null) {
       const message = await getFullInfo(userId, cryptoSymbol);
       if (!message) {
         bot.sendMessage(

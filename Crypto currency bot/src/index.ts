@@ -158,7 +158,10 @@ ${cryptoSymbols}`,
 
   // get full information about crypto chosen currency logic
   // switch following state by inline button;
-  if (cryptoSymbols.includes(msg.text?.toString().slice(1) as string)) {
+  if (
+    cryptoSymbols.includes(msg.text?.toString().slice(1) as string) &&
+    msg.text?.toString().slice(1) !== null
+  ) {
     const cryptoSymbol = msg.text?.toString().slice(1);
     const userId = msg.from?.id;
     if (userId && cryptoSymbol && cryptoSymbol !== null) {

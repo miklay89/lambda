@@ -28,7 +28,7 @@ var BotMessages;
 })(BotMessages || (BotMessages = {}));
 const bot = new node_telegram_bot_api_1.default(process.env.BOT_TOKEN, { polling: true });
 bot.on("message", async (msg) => {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
     if (((_a = msg.text) === null || _a === void 0 ? void 0 : _a.toString().toLowerCase().indexOf(BotMessages.startText)) === 0) {
         bot.sendMessage(msg.chat.id, `Welcome to crypto currency commutator bot. You can get list of commands using help command - ${BotMessages.helpText}`);
         return;
@@ -100,9 +100,10 @@ ${cryptoSymbols_1.default}`);
             return;
         }
     }
-    if (cryptoSymbols_1.default.includes((_k = msg.text) === null || _k === void 0 ? void 0 : _k.toString().slice(1))) {
-        const cryptoSymbol = (_l = msg.text) === null || _l === void 0 ? void 0 : _l.toString().slice(1);
-        const userId = (_m = msg.from) === null || _m === void 0 ? void 0 : _m.id;
+    if (cryptoSymbols_1.default.includes((_k = msg.text) === null || _k === void 0 ? void 0 : _k.toString().slice(1)) &&
+        ((_l = msg.text) === null || _l === void 0 ? void 0 : _l.toString().slice(1)) !== null) {
+        const cryptoSymbol = (_m = msg.text) === null || _m === void 0 ? void 0 : _m.toString().slice(1);
+        const userId = (_o = msg.from) === null || _o === void 0 ? void 0 : _o.id;
         if (userId && cryptoSymbol && cryptoSymbol !== null) {
             const message = await (0, getFullInformationAboutChosenCryptoCurrency_1.getFullInfo)(userId, cryptoSymbol);
             if (!message) {
@@ -139,7 +140,7 @@ ${cryptoSymbols_1.default}`);
             return;
         }
     }
-    if (((_o = msg.text) === null || _o === void 0 ? void 0 : _o.toString().indexOf(BotMessages.getRecentListText)) === 0) {
+    if (((_p = msg.text) === null || _p === void 0 ? void 0 : _p.toString().indexOf(BotMessages.getRecentListText)) === 0) {
         const message = await (0, getListRecent_1.default)();
         if (!message) {
             bot.sendMessage(msg.chat.id, "No conection to server, please try again later.");

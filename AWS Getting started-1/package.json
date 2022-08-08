@@ -1,0 +1,13 @@
+{
+  "name": "aws-getting-started",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -Rf ../project.zip && zip -r ../project.zip *"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

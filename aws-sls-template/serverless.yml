@@ -1,0 +1,25 @@
+org: miklay
+app: aws-node-http-api-project
+service: aws-sls-template
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-west-2
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - httpApi:
+          path: /
+          method: get
+
+package:
+  exclude:
+    - src/**
+    - node_modules/**
+    - .eslintrc.json
+    - .prettierrc
+    - webpack.config.js

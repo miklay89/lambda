@@ -1,0 +1,136 @@
+org: miklay
+app: aws-node-http-api-project
+service: AWS-image-uploading-to-s3
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+
+  environment: 
+    tableName: ${self:custom.tableName}
+    bucketName: ${self:custom.bucketName}
+    region: us-east-1
+    user_pool_id:
+      Ref: CognitoUserPool
+    client_id: 
+      Ref: CognitoUserPoolClient
+
+  httpApi:
+    cors:
+      allowedMethods:
+        - GET
+        - PUT
+        - POST
+        - DELETE
+      allowedOrigins: 
+        - '*'
+      allowedHeaders: 
+        - '*'
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+        - s3:*
+        - cognito-idp:*
+      Resource: '*'
+
+custom:
+  bucketName: myserverlessuploadimegesbucket-miklay
+  tableName: usersPictures
+
+functions:
+  signUp:
+    handler: handler.signUp
+    events:
+      - httpApi:
+          path: /sign_up
+          method: post
+
+  signIn:
+    handler: handler.signIn
+    events:
+      - httpApi:
+          path: /sign_in
+          method: post
+
+  uploadImg:
+    handler: handler.uploadImg
+    events:
+      - httpApi:
+          path: /upload
+          method: post
+
+  deleteImg:
+    handler: handler.deleteImg
+    events:
+      - httpApi:
+          path: /delete
+          method: delete
+
+  getListImgs:
+    handler: handler.getListImgs
+    events:
+      - httpApi:
+          path: /get_list_imgs
+          method: get
+
+resources:
+  Resources:
+
+    ImgBucketUpload:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucketName}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - PUT
+                - POST
+                - GET
+                - DELETE
+
+    DynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: UserID
+            AttributeType: S
+          - AttributeName: imagesUrls
+            AttributeType: S
+        KeySchema:
+          - AttributeName: UserID
+            KeyType: HASH
+          - AttributeName: imagesUrls
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: ${self:provider.stage}-user-pool
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes: 
+          - email
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${self:provider.stage}-user-pool-client
+        GenerateSecret: false
+        UserPoolId:
+          Ref: CognitoUserPool
+        AccessTokenValidity: 5
+        IdTokenValidity: 5
+        ExplicitAuthFlows:
+          - "ADMIN_NO_SRP_AUTH"

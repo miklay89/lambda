@@ -22,9 +22,9 @@ function readFileNames(dirPath) {
 }
 
 // считаем строки (словарь)
-function uniq(a) {
+function uniq(arr) {
   let seen = {};
-  return a.filter(function(item) {
+  return arr.filter(function(item) {
       return seen.hasOwnProperty(item) ? false : (seen[item] = true);
   });
 }
@@ -93,7 +93,6 @@ existInAllFiles(dirPath);
 // Словосочетаний, которые есть, как минимум, в десяти файлах
 async function existInAtLeastTen() {
   const fileNames = await readFileNames(dirPath);
-  let result = 0;
   let resArr = [];
   let fileCount = 0;
   fileNames.forEach(file => {
@@ -138,3 +137,12 @@ async function existInAtLeastTen() {
 }
 
 existInAtLeastTen(dirPath);
+
+/*
+Всего словосочетаний, которые есть во всех 20 файлах посчитано за 1.522149218 сек.
+Всего словосочетаний, которые есть во всех 20 файлах: 2000000
+Уникальных словосочетаний во всех файлах посчитано за 1.737094635 сек.
+Уникальных словосочетаний во всех файлах: 1340240
+Словосочетаний, которые есть, как минимум, в десяти файлах посчитано за 2.188705098 сек.
+Словосочетаний, которые есть, как минимум, в десяти файлах: 73245
+*/

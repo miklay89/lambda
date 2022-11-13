@@ -123,8 +123,8 @@ function existInAtLeastTen(url) {
         })
             .then((unwrappedArr) => createDictionary(unwrappedArr))
             .then((dictionary) => {
-            const countAtLeastInTenFiles = Object.values(dictionary).filter((element) => element >= 10);
-            console.log(`Phrases at least in 10 files: ${countAtLeastInTenFiles.length}`);
+            const countAtLeastInTenFiles = Object.values(dictionary).filter((element) => element >= 10).length;
+            console.log(`Phrases at least in 10 files: ${countAtLeastInTenFiles}`);
             // end of calculation timer
             const endTimer = Date.now();
             console.log(`Phrases at least in 10 files counted for ${(endTimer - starTimer) / 1000} seconds.`);

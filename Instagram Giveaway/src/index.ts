@@ -125,9 +125,9 @@ async function existInAtLeastTen(url: string) {
     .then((dictionary) => {
       const countAtLeastInTenFiles = Object.values(dictionary).filter(
         (element) => element >= 10
-      );
+      ).length;
 
-      console.log(`Phrases at least in 10 files: ${countAtLeastInTenFiles.length}`);
+      console.log(`Phrases at least in 10 files: ${countAtLeastInTenFiles}`);
       // end of calculation timer
       const endTimer = Date.now();
       console.log(

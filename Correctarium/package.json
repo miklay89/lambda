@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node index",
     "dev": "nodemon index",
-    "test": "jest"
+    "dev_ts": "nodemon ./dist/index.js",
+    "test": "jest",
+    "test_ts": "jest ./dist/logic.test.js"
   },
   "author": "Mihail Kurov <miklay89@gmail.com>",
   "license": "ISC",
@@ -15,6 +17,8 @@
     "nodemon": "^2.0.15"
   },
   "devDependencies": {
+    "@jest/globals": "^29.3.1",
+    "@types/express": "^4.17.14",
     "jest": "^27.4.7"
   }
 }

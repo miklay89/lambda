@@ -4,7 +4,7 @@ import readline from "readline";
 
 export default async function findByIP(
   decimalIpNumber: number
-): Promise<string> {
+): Promise<string | null> {
   return new Promise((resolve, reject) => {
     const instream = fs.createReadStream(
       path.join(__dirname, "..", "..", "ip base", "IP2LOCATION-LITE-DB1.CSV")
@@ -22,13 +22,13 @@ export default async function findByIP(
       const rangeTo = +candidate[1].slice(1, candidate[1].length - 1);
 
       if (decimalIpNumber >= rangeFrom && decimalIpNumber <= rangeTo) {
-        resolve(candidate[3]);
+        resolve(candidate[3].slice(1, candidate[3].length - 1));
         rl.close();
       }
     });
 
     rl.on("close", () => {
-      reject("You not from our planet!)");
+      resolve(null);
     });
   });
 }

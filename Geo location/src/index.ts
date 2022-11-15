@@ -8,17 +8,23 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.get("/", async (req, res) => {
+app.post("/", async (req, res) => {
   if (!req.body.ip) return res.json({ message: "IP-address is required." });
   const ipAddress = req.body.ip;
   const ipToDecimal = calcIPNumber(ipAddress);
   const location = await findByIP(ipToDecimal);
 
-  res.json({
-    message: `Okey, you are  from - ${location.slice(1, location.length - 1)}`,
-    ip_address: ipAddress, 
-  });
+  if (!location) {
+    return res.json({
+      message: `You are not from our planet!)`,
+      ip_address: ipAddress,
+    });
+  }
 
+  res.json({
+    message: `Okay, you are  from - ${location}`,
+    ip_address: ipAddress,
+  });
 });
 
 app.listen(PORT, () => {

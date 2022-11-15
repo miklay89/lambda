@@ -30,12 +30,12 @@ function findByIP(decimalIpNumber) {
                 const rangeFrom = +candidate[0].slice(1, candidate[0].length - 1);
                 const rangeTo = +candidate[1].slice(1, candidate[1].length - 1);
                 if (decimalIpNumber >= rangeFrom && decimalIpNumber <= rangeTo) {
-                    resolve(candidate[3]);
+                    resolve(candidate[3].slice(1, candidate[3].length - 1));
                     rl.close();
                 }
             }));
             rl.on("close", () => {
-                reject("You not from our planet!)");
+                resolve(null);
             });
         });
     });

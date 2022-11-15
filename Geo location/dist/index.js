@@ -19,14 +19,20 @@ const PORT = 3000;
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded());
-app.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.body.ip)
         return res.json({ message: "IP-address is required." });
     const ipAddress = req.body.ip;
     const ipToDecimal = (0, ipnumbertodecimal_1.default)(ipAddress);
     const location = yield (0, findbyip_1.default)(ipToDecimal);
+    if (!location) {
+        return res.json({
+            message: `You are not from our planet!)`,
+            ip_address: ipAddress,
+        });
+    }
     res.json({
-        message: `Okey, you are  from - ${location.slice(1, location.length - 1)}`,
+        message: `Okay, you are  from - ${location}`,
         ip_address: ipAddress,
     });
 }));

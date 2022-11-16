@@ -45,7 +45,7 @@ async function uniqueValues(url: string): Promise<void> {
   const starTimer = Date.now();
 
   const fileNames = await readFileNames(url);
-  if (!fileNames) return;
+  if (!fileNames) return console.log(`No files in the folder - ${url}`);
 
   const promiseArr: Array<Promise<string[]>> = [];
   fileNames.forEach((file) => {
@@ -76,7 +76,7 @@ async function existInAllFiles(url: string): Promise<void> {
   const starTimer = Date.now();
 
   const fileNames = await readFileNames(url);
-  if (!fileNames) return;
+  if (!fileNames) return console.log(`No files in the folder - ${url}`);
 
   const promiseArr: Array<Promise<string[]>> = [];
   fileNames.forEach((file) => {
@@ -105,7 +105,7 @@ async function existInAtLeastTen(url: string) {
   const starTimer = Date.now();
 
   const fileNames = await readFileNames(url);
-  if (!fileNames) return;
+  if (!fileNames) return console.log(`No files in the folder - ${url}`);
 
   const promiseArr: Array<Promise<string[]>> = [];
   fileNames.forEach((file) => {

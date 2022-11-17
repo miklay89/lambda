@@ -3,15 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const keys_1 = __importDefault(require("./keys/keys"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
-const body_parser_1 = require("body-parser");
-const db_1 = __importDefault(require("./db"));
-const storage_1 = __importDefault(require("./routes/storage"));
+const getfromstorage_1 = __importDefault(require("./routes/getfromstorage"));
+const posttostorage_1 = __importDefault(require("./routes/posttostorage"));
+dotenv_1.default.config();
+const PORT = process.env.PORT;
 const app = (0, express_1.default)();
-(0, db_1.default)();
-app.use((0, body_parser_1.json)());
-app.use('/storage', storage_1.default);
-app.listen(keys_1.default.PORT, () => {
-    console.log(`Server has been started on port ${keys_1.default.PORT}.`);
+app.use(express_1.default.urlencoded({ extended: true }));
+app.use(express_1.default.json());
+app.use("/", getfromstorage_1.default);
+app.use("/", posttostorage_1.default);
+app.listen(PORT, () => {
+    console.log(`Server has been started on port ${PORT}.`);
 });

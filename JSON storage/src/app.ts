@@ -1,16 +1,19 @@
-import keys from './keys/keys';
-import express from 'express';
-import { json } from 'body-parser';
-import dataBase from "./db";
+import dotenv from "dotenv";
+import express from "express";
+import getFromStorageRoutes from "./routes/getfromstorage";
+import postToStorageRoutes from "./routes/posttostorage";
 
-import storageRoutes from './routes/storage';
+dotenv.config();
+const PORT = process.env.PORT as string;
 
 const app = express();
-dataBase();
 
-app.use(json());
-app.use('/storage', storageRoutes);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.listen(keys.PORT, () => {
-  console.log(`Server has been started on port ${keys.PORT}.`);
+app.use("/", getFromStorageRoutes);
+app.use("/", postToStorageRoutes);
+
+app.listen(PORT, () => {
+  console.log(`Server has been started on port ${PORT}.`);
 });

@@ -31,7 +31,7 @@ const searchByPostcode: RequestHandler = async (req, res) => {
       })
       .where(eq(clinicsTable.postcode, postcode));
     if (!query.length) {
-      return res.json({ message: "Not found." });
+      return res.status(404).json({ message: "Not found." });
     }
     return res.json(query);
   } catch (err) {

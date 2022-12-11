@@ -26,7 +26,7 @@ const allClinicsInfo: RequestHandler = async (req, res) => {
       phone: clinicsTable.phone,
     });
     if (!query.length) {
-      return res.json({ message: "Not found." });
+      return res.status(404).json({ message: "Not found." });
     }
     return res.json(query);
   } catch (err) {

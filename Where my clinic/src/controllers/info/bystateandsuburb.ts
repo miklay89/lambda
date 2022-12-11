@@ -36,7 +36,7 @@ const getClinicByStateAndSuburb: RequestHandler = async (req, res) => {
       )
       .where(eq(suburbsTable.suburb_slug, suburbSlug));
     if (!query.length) {
-      return res.json({ message: "Not found." });
+      return res.status(404).json({ message: "Not found." });
     }
     const data = query.map((e) => e.clinics);
     return res.json(data);

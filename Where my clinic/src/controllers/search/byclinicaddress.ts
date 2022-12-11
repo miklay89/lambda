@@ -31,7 +31,7 @@ const searchByClinicAddress: RequestHandler = async (req, res) => {
       })
       .where(ilike(clinicsTable.full_address, clinicAddress));
     if (!query.length) {
-      return res.json({ message: "Not found." });
+      return res.status(404).json({ message: "Not found." });
     }
     return res.json(query);
   } catch (err) {

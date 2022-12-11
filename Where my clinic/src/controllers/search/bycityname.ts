@@ -31,7 +31,7 @@ export const searchByCityName: RequestHandler = async (req, res) => {
       })
       .where(ilike(clinicsTable.city_name, cityName));
     if (!query.length) {
-      return res.json({ message: "Not found." });
+      return res.status(404).json({ message: "Not found." });
     }
     return res.json(query);
   } catch (err) {

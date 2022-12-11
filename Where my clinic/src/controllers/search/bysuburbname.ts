@@ -31,7 +31,7 @@ const searchBySuburbName: RequestHandler = async (req, res) => {
       })
       .where(ilike(clinicsTable.suburb_name, suburb));
     if (!query.length) {
-      return res.json({ message: "Not found." });
+      return res.status(404).json({ message: "Not found." });
     }
     return res.json(query);
   } catch (err) {

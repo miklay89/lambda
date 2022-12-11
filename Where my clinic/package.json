@@ -1,0 +1,39 @@
+{
+  "name": "where-my-clinic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./dist/index",
+    "migrate": "drizzle-kit generate",
+    "parse": "node ./dist/parsedatatodb"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.9",
+    "@types/pg": "^8.6.5",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
+    "drizzle-kit": "^0.12.18",
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.0"
+  },
+  "dependencies": {
+    "@fast-csv/parse": "^4.3.6",
+    "dotenv": "^16.0.3",
+    "drizzle-orm": "^0.12.0-beta.22",
+    "drizzle-orm-pg": "^0.12.0-beta.39",
+    "express": "^4.18.2",
+    "fast-csv": "^4.3.6",
+    "pg": "^8.8.0"
+  }
+}

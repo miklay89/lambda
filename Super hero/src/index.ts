@@ -1,9 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import customersRoutes from "./routes/customers";
-import dashboardRoutes from "./routes/dashboard";
 import employeesRoutes from "./routes/employees";
-import homeRoutes from "./routes/home";
 import ordersRoutes from "./routes/orders";
 import productsRoutes from "./routes/products";
 import searchRoutes from "./routes/search";
@@ -21,9 +19,7 @@ app.use(express.json());
 
 // routes
 app.use("/", customersRoutes);
-app.use("/", dashboardRoutes);
 app.use("/", employeesRoutes);
-app.use("/", homeRoutes);
 app.use("/", ordersRoutes);
 app.use("/", productsRoutes);
 app.use("/", searchRoutes);

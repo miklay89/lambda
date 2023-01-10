@@ -1,8 +1,6 @@
 import Router from "express";
-import {
-  allSuppliers,
-  singleSupplier,
-} from "../controllers/suppliersControllers";
+import allSuppliers from "../controllers/allsuppliers";
+import singleSupplier from "../controllers/supplierbyid";
 
 const router = Router();
 

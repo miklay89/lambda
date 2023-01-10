@@ -11,9 +11,9 @@ GET - /products - will show a list of products
 GET - /suppliers - will show a list of suppliers
 
 POST - /search
-  body: 
-    {"table": "products","search": "search_string"} - for search in products table by product name 
-    {"table": "customers","search": "search_string"} - for search in customers table by (company name or contact name or contact title or company address)
+body: 
+{"table": "products","search": "search_string"} - for search in products table by product name 
+{"table": "customers","search": "search_string"} - for search in customers table by (company name or contact name or contact title or company address)
 
 GET - /customers/${customer_id} - will show information about customer by customer_id 
 

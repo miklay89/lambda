@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 import customersRoutes from "./routes/customers";
 import employeesRoutes from "./routes/employees";
 import ordersRoutes from "./routes/orders";
@@ -16,6 +17,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 // routes
 app.use("/", customersRoutes);

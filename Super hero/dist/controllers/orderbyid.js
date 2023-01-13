@@ -89,10 +89,8 @@ const singleOrder = async (req, res) => {
         }
         const response = {
             data: {
-                data: {
-                    orderInfo: orderInfo.rows,
-                    productsInOrder: productsInOrder.rows,
-                },
+                orderInfo: orderInfo.rows,
+                productsInOrder: productsInOrder.rows,
             },
             queryInfo: {
                 orderInfo: {
